@@ -57,7 +57,6 @@ const SideBar = ({
         {MenuItem.map((item, index) => (
           // 選択済みのメニューに対し、背景色を変更させる
           <NavLink key={item.text} to={item.path} style={({isActive})=>{
-            console.log("選択されたメニューは",item.text,isActive)
             return {...baseLinkStyle,
             ...(isActive ? activeLinkStyle:{})
             }
