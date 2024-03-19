@@ -39,8 +39,6 @@ export default function AppLayout() {
     }
   };
 
-  
-
   return (
     <Box
       sx={{
