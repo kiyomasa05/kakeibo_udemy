@@ -7,15 +7,16 @@ import TransactionForm from "../components/TransactionForm";
 
 const Home = () => {
   return (
-    <Box sx={{display:"flex"}}>
+    <Box sx={{ display: "flex" }}>
       {/* 左側 */}
-      <Box sx={{flexGrow:1}}>
+      <Box sx={{ flexGrow: 1 }}>
         <MonthlySummary />
         <Calendar />
       </Box>
       {/* 右側 */}
       <Box>
-        <TransactionMenu/>
+        <TransactionMenu />
+        {process.env.REACT_APP_FIRE_BASE_MESSAGING_SENDER_ID}
         <TransactionForm />
       </Box>
     </Box>
