@@ -9,8 +9,6 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import HomeIcon from "@mui/icons-material/Home";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import React, { CSSProperties } from "react";
@@ -79,7 +77,7 @@ const SideBar = ({
   return (
     <Box
       component="nav"
-      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
       aria-label="mailbox folders"
     >
       {/* モバイル用 */}
@@ -93,7 +91,7 @@ const SideBar = ({
         }}
         sx={{
           // PCサイズだとdisplay:none
-          display: { xs: "block", sm: "none" },
+          display: { xs: "block", md: "none" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
             width: drawerWidth,
@@ -106,8 +104,8 @@ const SideBar = ({
       <Drawer
         variant="permanent" // 常に固定で表示されるドロワーに
         sx={{
-          // 600px以上になった時にdisplay block
-          display: { xs: "none", sm: "block" },
+          // 900px以上になった時にdisplay block
+          display: { xs: "none", md: "block" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
             width: drawerWidth,
