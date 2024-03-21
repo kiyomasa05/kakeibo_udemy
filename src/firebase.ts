@@ -11,11 +11,8 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_FIRE_BASE_PROJECT_ID,
   storageBucket: process.env.REACT_APP_FIRE_BASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIRE_BASE_MESSAGING_SENDER_ID,
-  appId:
-    process.env
-      .REACT_APP_FIRE_BASE_MESSAGING_SENDER_IDREACT_APP_FIRE_BASE_APPID,
+  appId: process.env.REACT_APP_FIRE_BASE_MESSAGING_SENDER_IDREACT_APP_FIRE_BASE_APPID,
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
