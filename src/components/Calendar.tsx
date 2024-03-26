@@ -7,12 +7,19 @@ import "../calendar.css";
 import { Balance, CalenderContent, Transaction } from "../types";
 import { calculateDailyBalances } from "../utils/financeCalculations";
 import { formatCurrency } from "../utils/formatting";
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+
 interface CalendarProps {
   monthlyTransactions: Transaction[];
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
+  setCurrentDay: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Calendar = ({ monthlyTransactions, setCurrentMonth }: CalendarProps) => {
+const Calendar = ({
+  monthlyTransactions,
+  setCurrentMonth,
+  setCurrentDay,
+}: CalendarProps) => {
   // Calenderの中の要素とスタイル
   const renderEventContent = (eventInfo: EventContentArg) => {
     return (
@@ -50,16 +57,20 @@ const Calendar = ({ monthlyTransactions, setCurrentMonth }: CalendarProps) => {
   };
   const calenderEvents = createCalenderEvents(dailyBalances);
   const handleDateSet = (datesetInfo: DatesSetArg) => {
-    setCurrentMonth(datesetInfo.view.currentStart)
+    setCurrentMonth(datesetInfo.view.currentStart);
+  };
+  const handleDateClick = (dateInfo: DateClickArg) => {
+    setCurrentDay(dateInfo.dateStr);
   };
   return (
     <FullCalendar
       locale={jaLocale}
-      plugins={[dayGridPlugin]}
+      plugins={[dayGridPlugin, interactionPlugin]}
       initialView="dayGridMonth"
       events={calenderEvents}
       eventContent={renderEventContent}
       datesSet={handleDateSet}
+      dateClick={handleDateClick}
     />
   );
 };

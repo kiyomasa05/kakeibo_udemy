@@ -4,7 +4,7 @@ export function financeCalculations(transactions: Transaction[]): Balance {
   //developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
   return transactions.reduce(
     (acc, transaction) => {
-      if (transaction.type == "income") {
+      if (transaction.type === "income") {
         acc.income += transaction.amount;
       } else {
         acc.expense += transaction.amount;
