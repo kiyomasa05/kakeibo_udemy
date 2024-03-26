@@ -14,8 +14,8 @@ const Home = ({monthlyTransactions}:HomeProps) => {
     <Box sx={{ display: "flex" }}>
       {/* 左側 */}
       <Box sx={{ flexGrow: 1 }}>
-        <MonthlySummary monthlyTransactions={ monthlyTransactions} />
-        <Calendar />
+        <MonthlySummary monthlyTransactions={monthlyTransactions} />
+        <Calendar monthlyTransactions={monthlyTransactions} />
       </Box>
       {/* 右側 */}
       <Box>
