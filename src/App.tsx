@@ -21,8 +21,7 @@ function App() {
   }
   // 取引データを格納するstate
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [currentMonth, seCurrentMonth] = useState(new Date());
-  console.log(currentMonth);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   // 後にtanstack queryでやってみよう
   useEffect(() => {
@@ -53,14 +52,21 @@ function App() {
   const monthlyTransactions = transactions.filter((transaction) => {
     return transaction.date.startsWith(formatMonth(currentMonth));
   });
-  console.log(monthlyTransactions);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <Routes>
           <Route path="/" element={<AppLayout />}>
-            <Route index element={<Home monthlyTransactions={ monthlyTransactions} />}></Route>
+            <Route
+              index
+              element={
+                <Home
+                  monthlyTransactions={monthlyTransactions}
+                  setCurrentMonth={setCurrentMonth}
+                />
+              }
+            ></Route>
             <Route path="/report" element={<Report />}></Route>
             {/* 何にもマッチしなかった場合 */}
             <Route path="*" element={<NoMatch />}></Route>

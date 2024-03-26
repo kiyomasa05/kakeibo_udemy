@@ -2,16 +2,17 @@ import FullCalendar from "@fullcalendar/react";
 import React from "react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import jaLocale from "@fullcalendar/core/locales/ja";
-import { EventContentArg } from "@fullcalendar/core";
+import { DatesSetArg, EventContentArg } from "@fullcalendar/core";
 import "../calendar.css";
 import { Balance, CalenderContent, Transaction } from "../types";
 import { calculateDailyBalances } from "../utils/financeCalculations";
 import { formatCurrency } from "../utils/formatting";
 interface CalendarProps {
-  monthlyTransactions:Transaction[]
+  monthlyTransactions: Transaction[];
+  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
 }
 
-const Calendar = ({ monthlyTransactions }:CalendarProps) => {
+const Calendar = ({ monthlyTransactions, setCurrentMonth }: CalendarProps) => {
   // Calenderの中の要素とスタイル
   const renderEventContent = (eventInfo: EventContentArg) => {
     return (
@@ -38,18 +39,19 @@ const Calendar = ({ monthlyTransactions }:CalendarProps) => {
     // 配列のkeyのみを取得し、それぞれ動的な値を返却する
     return Object.keys(dailyBalances).map((date) => {
       // keyを指定し、分割代入すれば動的に値を取得できる
-      const {income,expense,balance} = dailyBalances[date]
+      const { income, expense, balance } = dailyBalances[date];
       return {
         start: date,
         income: formatCurrency(income),
         expense: formatCurrency(expense),
         balance: formatCurrency(balance),
       };
-    })
+    });
   };
-  const calenderEvents = createCalenderEvents(dailyBalances)
-
-  
+  const calenderEvents = createCalenderEvents(dailyBalances);
+  const handleDateSet = (datesetInfo: DatesSetArg) => {
+    setCurrentMonth(datesetInfo.view.currentStart)
+  };
   return (
     <FullCalendar
       locale={jaLocale}
@@ -57,6 +59,7 @@ const Calendar = ({ monthlyTransactions }:CalendarProps) => {
       initialView="dayGridMonth"
       events={calenderEvents}
       eventContent={renderEventContent}
+      datesSet={handleDateSet}
     />
   );
 };
