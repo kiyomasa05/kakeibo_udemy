@@ -11,6 +11,7 @@ interface HomeProps {
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
 }
 const Home = ({ monthlyTransactions, setCurrentMonth }: HomeProps) => {
+  
   return (
     <Box sx={{ display: "flex" }}>
       {/* 左側 */}
