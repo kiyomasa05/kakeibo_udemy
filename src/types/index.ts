@@ -18,3 +18,9 @@ export interface Balance {
   expense: number;
   balance: number;
 }
+export interface CalenderContent {
+  start: string;
+  income: string;//1,000のようにカンマ区切りにするため文字列
+  expense: string;
+  balance: string;
+}
