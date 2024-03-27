@@ -7,19 +7,29 @@ import "../calendar.css";
 import { Balance, CalenderContent, Transaction } from "../types";
 import { calculateDailyBalances } from "../utils/financeCalculations";
 import { formatCurrency } from "../utils/formatting";
-import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import { useTheme } from "@mui/material";
 
 interface CalendarProps {
   monthlyTransactions: Transaction[];
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
   setCurrentDay: React.Dispatch<React.SetStateAction<string>>;
+  currentDay: string;
 }
 
 const Calendar = ({
   monthlyTransactions,
   setCurrentMonth,
   setCurrentDay,
+  currentDay,
 }: CalendarProps) => {
+
+  const theme = useTheme()
+  const backgroundEvent = {
+    start: currentDay,
+    display: "background",
+    backgroundColor: theme.palette.incomeColor.light,
+  };
   // Calenderの中の要素とスタイル
   const renderEventContent = (eventInfo: EventContentArg) => {
     return (
@@ -67,7 +77,7 @@ const Calendar = ({
       locale={jaLocale}
       plugins={[dayGridPlugin, interactionPlugin]}
       initialView="dayGridMonth"
-      events={calenderEvents}
+      events={[...calenderEvents, backgroundEvent]}
       eventContent={renderEventContent}
       datesSet={handleDateSet}
       dateClick={handleDateClick}
