@@ -15,7 +15,6 @@ import React from "react";
 //アイコン
 import NotesIcon from "@mui/icons-material/Notes";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
 import DailySummary from "./DailySummary";
 import { Transaction } from "../types";
 import { formatCurrency } from "../utils/formatting";
@@ -24,11 +23,13 @@ import iconComponents from "./common/iconComponents";
 interface TransactionProps {
   dailyTransactions: Transaction[];
   currentDay: string;
+  onAddTransactionForm: () => void;
 }
 
 const TransactionMenu = ({
   dailyTransactions,
   currentDay,
+  onAddTransactionForm,
 }: TransactionProps) => {
   const menuDrawerWidth = 320;
   return (
@@ -66,16 +67,21 @@ const TransactionMenu = ({
             <Typography variant="body1">内訳</Typography>
           </Box>
           {/* 右側の追加ボタン */}
-          <Button startIcon={<AddCircleIcon />} color="primary">
+          <Button
+            onClick={onAddTransactionForm}
+            startIcon={<AddCircleIcon />}
+            color="primary"
+          >
             内訳を追加
           </Button>
         </Box>
         <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
           <List aria-label="取引履歴">
             <Stack spacing={2}>
-              {dailyTransactions.map((transaction) => (
+              {dailyTransactions.map((transaction, key) => (
                 <ListItem disablePadding>
                   <Card
+                    key={transaction.content}
                     sx={{
                       width: "100%",
                       backgroundColor:
