@@ -13,6 +13,17 @@ import React, { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close"; // 閉じるボタン用のアイコン
 import FastfoodIcon from "@mui/icons-material/Fastfood"; //食事アイコン
 import { Controller, useForm } from "react-hook-form";
+import { ExpenseCategory, IncomeCategory } from "../types";
+import AlarmIcon from "@mui/icons-material/Alarm";
+import HomeIcon from "@mui/icons-material/Home";
+import HailIcon from "@mui/icons-material/Hail";
+import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
+import BabyChangingStationIcon from "@mui/icons-material/BabyChangingStation";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import HelpIcon from "@mui/icons-material/Help";
+import AddCardIcon from "@mui/icons-material/AddCard";
+import SavingsIcon from "@mui/icons-material/Savings";
 
 interface TransactionFormProps {
   onCloseForm: () => void;
@@ -21,12 +32,33 @@ interface TransactionFormProps {
 }
 type IncomeExpense = "income" | "expense";
 
+interface CategoryItem {
+  label: IncomeCategory | ExpenseCategory;
+  icon: JSX.Element;
+}
+
 const TransactionForm = ({
   onCloseForm,
   isEntryDrawerOpen,
   currentDay,
 }: TransactionFormProps) => {
   const formWidth = 320;
+
+  const expenseCategories: CategoryItem[] = [
+    { label: "食費", icon: <FastfoodIcon fontSize="small" /> },
+    { label: "日用品", icon: <AlarmIcon fontSize="small" /> },
+    { label: "住居費", icon: <HomeIcon fontSize="small" /> },
+    { label: "娯楽", icon: <HailIcon fontSize="small" /> },
+    { label: "医療費", icon: <MedicalInformationIcon fontSize="small" /> },
+    { label: "子供", icon: <BabyChangingStationIcon fontSize="small" /> },
+    { label: "外食", icon: <RestaurantIcon fontSize="small" /> },
+    { label: "自己投資", icon: <LocalLibraryIcon fontSize="small" /> },
+    { label: "その他", icon: <HelpIcon fontSize="small" /> },
+  ];
+  const IncomeCategories: CategoryItem[] = [
+    { label: "給与", icon: <AddCardIcon fontSize="small" /> },
+    { label: "副収入", icon: <SavingsIcon fontSize="small" /> },
+  ];
 
   const { control, setValue, watch } = useForm({
     // 初期値の指定 componentのnameの値を指定
