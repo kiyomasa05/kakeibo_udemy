@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close"; // 閉じるボタン用のアイコン
 import FastfoodIcon from "@mui/icons-material/Fastfood"; //食事アイコン
 import { Controller, useForm } from "react-hook-form";
@@ -28,7 +28,7 @@ const TransactionForm = ({
 }: TransactionFormProps) => {
   const formWidth = 320;
 
-  const { control, setValue } = useForm({
+  const { control, setValue, watch } = useForm({
     // 初期値の指定 componentのnameの値を指定
     defaultValues: {
       type: "expense",
@@ -42,6 +42,13 @@ const TransactionForm = ({
   const incomeExpenseToggle = (type: IncomeExpense) => {
     setValue("type", type);
   };
+  // 監視する対象を指定し、色を変える
+  const currentType = watch("type");
+
+  // 日付を選択すると値を変える
+  useEffect(() => {
+    setValue("date", currentDay);
+  }, [currentDay]);
   return (
     <Box
       sx={{
@@ -153,7 +160,12 @@ const TransactionForm = ({
           />
 
           {/* 保存ボタン */}
-          <Button type="submit" variant="contained" color={"primary"} fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            color={currentType === "income" ? "primary" : "error"}
+            fullWidth
+          >
             保存
           </Button>
         </Stack>
