@@ -83,7 +83,7 @@ const TransactionForm = ({
   useEffect(() => {
     const newCategories =
       currentType === "expense" ? expenseCategories : IncomeCategories;
-    setCategories(newCategories)
+    setCategories(newCategories);
   }, [currentType]);
 
   // 日付を選択すると値を変える
@@ -173,7 +173,7 @@ const TransactionForm = ({
             render={({ field }) => (
               <TextField {...field} id="カテゴリ" label="カテゴリ" select>
                 {categories.map((category) => (
-                  <MenuItem value={category.label}>
+                  <MenuItem key={category.label} value={category.label}>
                     <ListItemIcon>{category.icon}</ListItemIcon>
                     {category.label}
                   </MenuItem>
@@ -187,7 +187,16 @@ const TransactionForm = ({
             name="amount"
             control={control}
             render={({ field }) => (
-              <TextField {...field} label="金額" type="number" />
+              <TextField
+                {...field}
+                value={field.value === 0 ? "" : field.value}
+                onChange={(e) => {
+                  const newValue = parseInt(e.target.value, 10) || 0;
+                  field.onChange(newValue);
+                }}
+                label="金額"
+                type="number"
+              />
             )}
           />
 
