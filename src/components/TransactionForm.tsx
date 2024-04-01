@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close"; // 閉じるボタン用のアイコン
 import FastfoodIcon from "@mui/icons-material/Fastfood"; //食事アイコン
 import { Controller, useForm } from "react-hook-form";
@@ -60,6 +60,8 @@ const TransactionForm = ({
     { label: "副収入", icon: <SavingsIcon fontSize="small" /> },
   ];
 
+  const [categories, setCategories] = useState(expenseCategories);
+
   const { control, setValue, watch } = useForm({
     // 初期値の指定 componentのnameの値を指定
     defaultValues: {
@@ -76,6 +78,13 @@ const TransactionForm = ({
   };
   // 監視する対象を指定し、色を変える
   const currentType = watch("type");
+
+  // currentTypeが切り替えわるごとに関数を実行
+  useEffect(() => {
+    const newCategories =
+      currentType === "expense" ? expenseCategories : IncomeCategories;
+    setCategories(newCategories)
+  }, [currentType]);
 
   // 日付を選択すると値を変える
   useEffect(() => {
@@ -163,12 +172,12 @@ const TransactionForm = ({
             control={control}
             render={({ field }) => (
               <TextField {...field} id="カテゴリ" label="カテゴリ" select>
-                <MenuItem value={"食費"}>
-                  <ListItemIcon>
-                    <FastfoodIcon />
-                  </ListItemIcon>
-                  食費
-                </MenuItem>
+                {categories.map((category) => (
+                  <MenuItem value={category.label}>
+                    <ListItemIcon>{category.icon}</ListItemIcon>
+                    {category.label}
+                  </MenuItem>
+                ))}
               </TextField>
             )}
           />
