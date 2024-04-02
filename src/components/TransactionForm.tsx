@@ -65,7 +65,13 @@ const TransactionForm = ({
   const [categories, setCategories] = useState(expenseCategories);
 
   // react-hook-formの設定
-  const { control, setValue, watch,formState:{errors} ,handleSubmit} = useForm({
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
     // 初期値の指定 componentのnameの値を指定
     defaultValues: {
       type: "expense",
@@ -76,7 +82,7 @@ const TransactionForm = ({
     },
     resolver: zodResolver(transactionSchema),
   });
-  console.log(errors)
+  console.log(errors);
   // hook-foomの収支の値を切り替える
   const incomeExpenseToggle = (type: IncomeExpense) => {
     setValue("type", type);
@@ -96,9 +102,9 @@ const TransactionForm = ({
     setValue("date", currentDay);
   }, [currentDay]);
 
-  const onSubmit = (data:any) => {
-    console.log(data)
-  }
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
   return (
     <Box
       sx={{
@@ -171,6 +177,8 @@ const TransactionForm = ({
                 InputLabelProps={{
                   shrink: true,
                 }}
+                error={!!errors.date}
+                helperText={errors.date?.message}
               />
             )}
           />
@@ -180,7 +188,14 @@ const TransactionForm = ({
             name="category"
             control={control}
             render={({ field }) => (
-              <TextField {...field} id="カテゴリ" label="カテゴリ" select>
+              <TextField
+                error={!!errors.category}
+                helperText={errors.category?.message}
+                {...field}
+                id="カテゴリ"
+                label="カテゴリ"
+                select
+              >
                 {categories.map((category) => (
                   <MenuItem key={category.label} value={category.label}>
                     <ListItemIcon>{category.icon}</ListItemIcon>
@@ -190,13 +205,28 @@ const TransactionForm = ({
               </TextField>
             )}
           />
-
+          {/* 内容 */}
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                error={!!errors.content}
+                helperText={errors.content?.message}
+                {...field}
+                label="内容"
+                type="text"
+              />
+            )}
+          />
           {/* 金額 */}
           <Controller
             name="amount"
             control={control}
             render={({ field }) => (
               <TextField
+                error={!!errors.amount}
+                helperText={errors.amount?.message}
                 {...field}
                 value={field.value === 0 ? "" : field.value}
                 onChange={(e) => {
@@ -206,15 +236,6 @@ const TransactionForm = ({
                 label="金額"
                 type="number"
               />
-            )}
-          />
-
-          {/* 内容 */}
-          <Controller
-            name="content"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label="内容" type="text" />
             )}
           />
 
