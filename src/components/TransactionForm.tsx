@@ -24,6 +24,8 @@ import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import HelpIcon from "@mui/icons-material/Help";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import SavingsIcon from "@mui/icons-material/Savings";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { transactionSchema } from "../validations/schema";
 
 interface TransactionFormProps {
   onCloseForm: () => void;
@@ -62,7 +64,8 @@ const TransactionForm = ({
 
   const [categories, setCategories] = useState(expenseCategories);
 
-  const { control, setValue, watch } = useForm({
+  // react-hook-formの設定
+  const { control, setValue, watch,formState:{errors} ,handleSubmit} = useForm({
     // 初期値の指定 componentのnameの値を指定
     defaultValues: {
       type: "expense",
@@ -71,7 +74,9 @@ const TransactionForm = ({
       category: "",
       content: "",
     },
+    resolver: zodResolver(transactionSchema),
   });
+  console.log(errors)
   // hook-foomの収支の値を切り替える
   const incomeExpenseToggle = (type: IncomeExpense) => {
     setValue("type", type);
@@ -90,6 +95,10 @@ const TransactionForm = ({
   useEffect(() => {
     setValue("date", currentDay);
   }, [currentDay]);
+
+  const onSubmit = (data:any) => {
+    console.log(data)
+  }
   return (
     <Box
       sx={{
@@ -124,7 +133,7 @@ const TransactionForm = ({
         </IconButton>
       </Box>
       {/* フォーム要素 */}
-      <Box component={"form"}>
+      <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           {/* 収支切り替えボタン */}
           <Controller
