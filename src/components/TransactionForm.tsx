@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close"; // 閉じるボタン用のアイコン
 import FastfoodIcon from "@mui/icons-material/Fastfood"; //食事アイコン
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ExpenseCategory, IncomeCategory } from "../types";
 import AlarmIcon from "@mui/icons-material/Alarm";
 import HomeIcon from "@mui/icons-material/Home";
@@ -25,12 +25,13 @@ import HelpIcon from "@mui/icons-material/Help";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import SavingsIcon from "@mui/icons-material/Savings";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { transactionSchema } from "../validations/schema";
+import { Schema, transactionSchema } from "../validations/schema";
 
 interface TransactionFormProps {
   onCloseForm: () => void;
   isEntryDrawerOpen: boolean;
   currentDay: string;
+  onSaveTransaction: (transaction: Schema) => Promise<void>;
 }
 type IncomeExpense = "income" | "expense";
 
@@ -43,6 +44,7 @@ const TransactionForm = ({
   onCloseForm,
   isEntryDrawerOpen,
   currentDay,
+  onSaveTransaction,
 }: TransactionFormProps) => {
   const formWidth = 320;
 
@@ -71,7 +73,7 @@ const TransactionForm = ({
     watch,
     formState: { errors },
     handleSubmit,
-  } = useForm({
+  } = useForm<Schema>({
     // 初期値の指定 componentのnameの値を指定
     defaultValues: {
       type: "expense",
@@ -102,8 +104,8 @@ const TransactionForm = ({
     setValue("date", currentDay);
   }, [currentDay]);
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Schema> = (data) => {
+    onSaveTransaction(data);
   };
   return (
     <Box

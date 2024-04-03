@@ -8,9 +8,10 @@ import AppLayout from "./components/layout/AppLayout";
 import { theme } from "./theme/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Transaction } from "./types";
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 import { formatMonth } from "./utils/formatting";
+import { Schema } from "./validations/schema";
 
 function App() {
   // firestoreエラーかどうか判定する型ガード
@@ -52,6 +53,21 @@ function App() {
   const monthlyTransactions = transactions.filter((transaction) => {
     return transaction.date.startsWith(formatMonth(currentMonth));
   });
+
+  // 取引を保存する処理
+  const handleSaveTransaction =async (transaction:Schema) => {
+    try {
+      const docRef = await addDoc(collection(db, "Transactions"), transaction)
+    } catch(e) {
+      if (isFireStoreError(e)) {
+          console.error(e);
+          console.error("firebaseのエラーは", e.message);
+          console.error("firebaseのエラーは", e.code);
+        } else {
+          console.error("一般的なエラーは:", e);
+        }
+    }
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -64,6 +80,7 @@ function App() {
                 <Home
                   monthlyTransactions={monthlyTransactions}
                   setCurrentMonth={setCurrentMonth}
+                  onSaveTransaction={handleSaveTransaction}
                 />
               }
             ></Route>

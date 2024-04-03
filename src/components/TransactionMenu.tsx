@@ -78,10 +78,9 @@ const TransactionMenu = ({
         <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
           <List aria-label="取引履歴">
             <Stack spacing={2}>
-              {dailyTransactions.map((transaction, key) => (
-                <ListItem disablePadding>
+              {dailyTransactions.map((transaction, index) => (
+                <ListItem disablePadding key={index}>
                   <Card
-                    key={transaction.content}
                     sx={{
                       width: "100%",
                       backgroundColor:
