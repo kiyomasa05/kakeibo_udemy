@@ -33,6 +33,7 @@ interface TransactionFormProps {
   isEntryDrawerOpen: boolean;
   currentDay: string;
   onSaveTransaction: (transaction: Schema) => Promise<void>;
+  selectedTransaction: Transaction | null;
 }
 type IncomeExpense = "income" | "expense";
 
@@ -46,6 +47,7 @@ const TransactionForm = ({
   isEntryDrawerOpen,
   currentDay,
   onSaveTransaction,
+  selectedTransaction,
 }: TransactionFormProps) => {
   const formWidth = 320;
 
@@ -90,7 +92,7 @@ const TransactionForm = ({
   // hook-foomの収支の値を切り替える
   const incomeExpenseToggle = (type: IncomeExpense) => {
     setValue("type", type);
-    setValue("category","")
+    setValue("category", "");
   };
   // 監視する対象を指定し、色を変える
   const currentType = watch("type");
@@ -118,6 +120,16 @@ const TransactionForm = ({
       content: "",
     });
   };
+
+  useEffect(() => {
+    if (selectedTransaction) {
+      setValue("type", selectedTransaction.type);
+      setValue("date", selectedTransaction.date);
+      setValue("amount", selectedTransaction.amount);
+      setValue("category", selectedTransaction.category);
+      setValue("content", selectedTransaction.content);
+    }
+  }, [selectedTransaction])
   return (
     <Box
       sx={{
