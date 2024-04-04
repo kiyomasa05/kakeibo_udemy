@@ -55,19 +55,28 @@ function App() {
   });
 
   // 取引を保存する処理
-  const handleSaveTransaction =async (transaction:Schema) => {
+  const handleSaveTransaction = async (transaction: Schema) => {
     try {
-      const docRef = await addDoc(collection(db, "Transactions"), transaction)
-    } catch(e) {
+      const docRef = await addDoc(collection(db, "Transactions"), transaction);
+
+      const newTransaction = {
+        id: docRef.id,
+        ...transaction,
+      } as Transaction;
+      setTransactions((prevTransaction) => [
+        ...prevTransaction,
+        newTransaction,
+      ]);
+    } catch (e) {
       if (isFireStoreError(e)) {
-          console.error(e);
-          console.error("firebaseのエラーは", e.message);
-          console.error("firebaseのエラーは", e.code);
-        } else {
-          console.error("一般的なエラーは:", e);
-        }
+        console.error(e);
+        console.error("firebaseのエラーは", e.message);
+        console.error("firebaseのエラーは", e.code);
+      } else {
+        console.error("一般的なエラーは:", e);
+      }
     }
-  }
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

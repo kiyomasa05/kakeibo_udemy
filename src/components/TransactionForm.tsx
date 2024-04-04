@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close"; // 閉じるボタン用のアイコン
 import FastfoodIcon from "@mui/icons-material/Fastfood"; //食事アイコン
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { ExpenseCategory, IncomeCategory } from "../types";
+import { ExpenseCategory, IncomeCategory, Transaction } from "../types";
 import AlarmIcon from "@mui/icons-material/Alarm";
 import HomeIcon from "@mui/icons-material/Home";
 import HailIcon from "@mui/icons-material/Hail";
@@ -26,6 +26,7 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import SavingsIcon from "@mui/icons-material/Savings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Schema, transactionSchema } from "../validations/schema";
+import { ResetTv } from "@mui/icons-material";
 
 interface TransactionFormProps {
   onCloseForm: () => void;
@@ -73,6 +74,7 @@ const TransactionForm = ({
     watch,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<Schema>({
     // 初期値の指定 componentのnameの値を指定
     defaultValues: {
@@ -84,10 +86,11 @@ const TransactionForm = ({
     },
     resolver: zodResolver(transactionSchema),
   });
-  console.log(errors);
+
   // hook-foomの収支の値を切り替える
   const incomeExpenseToggle = (type: IncomeExpense) => {
     setValue("type", type);
+    setValue("category","")
   };
   // 監視する対象を指定し、色を変える
   const currentType = watch("type");
@@ -106,6 +109,14 @@ const TransactionForm = ({
 
   const onSubmit: SubmitHandler<Schema> = (data) => {
     onSaveTransaction(data);
+    // 送信後フォームの中身をリセットする
+    reset({
+      type: "expense",
+      date: currentDay,
+      amount: 0,
+      category: "",
+      content: "",
+    });
   };
   return (
     <Box
