@@ -8,7 +8,13 @@ import AppLayout from "./components/layout/AppLayout";
 import { theme } from "./theme/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Transaction } from "./types";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "./firebase";
 import { formatMonth } from "./utils/formatting";
 import { Schema } from "./validations/schema";
@@ -23,9 +29,6 @@ function App() {
   // 取引データを格納するstate
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  // 選択された取引を管理するstate
-  const [selectedTransaction, setSelectedTransaction] =
-    useState<Transaction | null>(null);
 
   // 後にtanstack queryでやってみよう
   useEffect(() => {
@@ -80,6 +83,23 @@ function App() {
       }
     }
   };
+
+  // 取引を削除する処理
+  const handleDeleteTransaction = async (transactionId: string) => {
+    try {
+      // firestoreのデータ削除
+      // doc https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=ja
+      await deleteDoc(doc(db, "Transactions", transactionId));
+    } catch (e) {
+      if (isFireStoreError(e)) {
+        console.error(e);
+        console.error("firebaseのエラーは", e.message);
+        console.error("firebaseのエラーは", e.code);
+      } else {
+        console.error("一般的なエラーは:", e);
+      }
+    }
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -93,8 +113,7 @@ function App() {
                   monthlyTransactions={monthlyTransactions}
                   setCurrentMonth={setCurrentMonth}
                   onSaveTransaction={handleSaveTransaction}
-                  selectedTransaction={selectedTransaction}
-                  setSelectedTransaction={setSelectedTransaction}
+                  onDeleteTransaction={handleDeleteTransaction}
                 />
               }
             ></Route>
