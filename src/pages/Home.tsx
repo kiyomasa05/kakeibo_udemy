@@ -35,16 +35,21 @@ const Home = ({
   // フォームの開閉する処理 子に渡す
   const closeForm = () => {
     setIsEntryDrawerOpen(!isEntryDrawerOpen);
+    setSelectedTransaction(null)
   };
   // フォームの開閉処理
   const handleAddTransactionForm = () => {
-    setIsEntryDrawerOpen(!isEntryDrawerOpen);
+    if (selectedTransaction) {
+      setSelectedTransaction(null);
+    } else {
+      setIsEntryDrawerOpen(!isEntryDrawerOpen);
+    }
   };
   // 取引が選択された時の処理
   const handleSelectTransaction = (transaction: Transaction) => {
     setIsEntryDrawerOpen(true);
-    setSelectedTransaction(transaction)
-  }
+    setSelectedTransaction(transaction);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
