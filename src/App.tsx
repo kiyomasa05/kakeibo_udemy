@@ -90,6 +90,10 @@ function App() {
       // firestoreのデータ削除
       // doc https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=ja
       await deleteDoc(doc(db, "Transactions", transactionId));
+      const filteredTransactions = transactions.filter(
+        (transaction) => transaction.id !== transactionId
+      );
+      setTransactions(filteredTransactions);
     } catch (e) {
       if (isFireStoreError(e)) {
         console.error(e);

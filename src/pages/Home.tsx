@@ -71,7 +71,6 @@ const Home = ({
           onAddTransactionForm={handleAddTransactionForm}
           onSelectTransaction={handleSelectTransaction}
         />
-        {process.env.REACT_APP_FIRE_BASE_MESSAGING_SENDER_ID}
         <TransactionForm
           onCloseForm={closeForm}
           isEntryDrawerOpen={isEntryDrawerOpen}
@@ -79,6 +78,7 @@ const Home = ({
           onSaveTransaction={onSaveTransaction}
           selectedTransaction={selectedTransaction}
           onDeleteTransaction={onDeleteTransaction}
+          setSelectedTransaction={setSelectedTransaction}
         />
       </Box>
     </Box>
