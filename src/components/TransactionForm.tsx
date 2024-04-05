@@ -115,8 +115,24 @@ const TransactionForm = ({
     setValue("date", currentDay);
   }, [currentDay]);
 
+  // 送信処理
   const onSubmit: SubmitHandler<Schema> = (data) => {
-    onSaveTransaction(data);
+    if (selectedTransaction) {
+      onUpdateTransation(data, selectedTransaction.id).then(() => {
+        console.log("更新しました");
+        setSelectedTransaction(null);
+      }).catch((error:unknown) => {
+        console.error(error)
+      })
+    } else {
+      onSaveTransaction(data)
+        .then(() => {
+          console.log("保存しました");
+        })
+        .catch((error: unknown) => {
+          console.error(error);
+        });
+    }
     // 送信後フォームの中身をリセットする
     reset({
       type: "expense",
@@ -292,7 +308,7 @@ const TransactionForm = ({
             color={currentType === "income" ? "primary" : "error"}
             fullWidth
           >
-            保存
+            {selectedTransaction ? "更新" : "保存"}
           </Button>
           {/* 削除ボタン 選択した取引がある状態のみ表示 */}
           {selectedTransaction && (

@@ -104,6 +104,21 @@ function App() {
       }
     }
   };
+
+  // 取引を更新する処理
+  const handleUpdateTransaction = () => {
+    try {
+      // firestore更新処理
+    } catch (e) {
+      if (isFireStoreError(e)) {
+        console.error(e);
+        console.error("firebaseのエラーは", e.message);
+        console.error("firebaseのエラーは", e.code);
+      } else {
+        console.error("一般的なエラーは:", e);
+      }
+    }
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
