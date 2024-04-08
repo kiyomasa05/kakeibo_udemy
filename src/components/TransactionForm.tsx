@@ -126,7 +126,7 @@ const TransactionForm = ({
       onUpdateTransaction(data, selectedTransaction.id)
         .then(() => {
           // console.log("更新しました");
-          // setSelectedTransaction(null);
+          setSelectedTransaction(null);
         })
         .catch((error: unknown) => {
           console.error(error);

@@ -107,13 +107,21 @@ function App() {
   };
 
   // 取引を更新する処理
-  const handleUpdateTransaction =async (transaction:Schema,transactionId:string) => {
+  const handleUpdateTransaction = async (
+    transaction: Schema,
+    transactionId: string
+  ) => {
     try {
       // firestore更新処理
       const docRef = doc(db, "Transactions", transactionId);
 
       // Set the "capital" field of the city 'DC'
       await updateDoc(docRef, transaction);
+      // フロント更新 各取引データを展開し、idと引数で受け取った取引idが一致していれば、一致した取引データを更新する
+      const upDateTransactions = transactions.map((t) =>
+        t.id === transactionId ? { ...t, ...transaction } : t
+      ) as Transaction[];
+      setTransactions(upDateTransactions);
     } catch (e) {
       if (isFireStoreError(e)) {
         console.error(e);
@@ -123,7 +131,7 @@ function App() {
         console.error("一般的なエラーは:", e);
       }
     }
-  }
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
