@@ -5,16 +5,23 @@ import CategoryChart from "../components/CategoryChart";
 import MonthSelector from "../components/MonthSelector";
 import TransactionTable from "../components/TransactionTable";
 
-const Report = () => {
+interface ReportProps {
+  currentMonth: Date;
+  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
+}
+const Report = ({ currentMonth, setCurrentMonth }: ReportProps) => {
   const commonPaperStyle = {
     height: { xs: "auto", md: "400px" },
     display: "flex",
-    flexDirection:"column"
+    flexDirection: "column",
   };
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <MonthSelector />
+        <MonthSelector
+          currentMonth={currentMonth}
+          setCurrentMonth={setCurrentMonth}
+        />
       </Grid>
       <Grid item xs={12} md={4}>
         <Paper sx={commonPaperStyle}>
@@ -27,7 +34,7 @@ const Report = () => {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <TransactionTable/>
+        <TransactionTable />
       </Grid>
     </Grid>
   );
