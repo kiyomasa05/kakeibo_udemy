@@ -11,12 +11,25 @@ interface MonthSelectorProps {
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
 }
 
-const MonthSelector = ({ currentMonth,setCurrentMonth }: MonthSelectorProps) => {
-  const handlePreviusMonth = () => {
-    const previusMonth = addMonths(currentMonth, -1)
-    setCurrentMonth(previusMonth);
-  }
+const MonthSelector = ({
+  currentMonth,
+  setCurrentMonth,
+}: MonthSelectorProps) => {
 
+  const handleDateChange = (newDate: Date | null) => {
+    if (newDate) {
+      setCurrentMonth(newDate);
+    }
+    
+  };
+
+  // 月を先月にする関数
+  const handlePreviusMonth = () => {
+    const previusMonth = addMonths(currentMonth, -1);
+    setCurrentMonth(previusMonth);
+  };
+
+  // 月を次月にする関数
   const handleNextMonth = () => {
     const nextMonth = addMonths(currentMonth, 1);
     setCurrentMonth(nextMonth);
@@ -38,6 +51,7 @@ const MonthSelector = ({ currentMonth,setCurrentMonth }: MonthSelectorProps) => 
           先月
         </Button>
         <DatePicker
+          onChange={handleDateChange}
           value={currentMonth}
           label="年月を選択"
           sx={{ mx: 2, background: "white" }}
@@ -49,11 +63,7 @@ const MonthSelector = ({ currentMonth,setCurrentMonth }: MonthSelectorProps) => 
             },
           }}
         />
-        <Button
-          onClick={handleNextMonth}
-          color={"primary"}
-          variant="contained"
-        >
+        <Button onClick={handleNextMonth} color={"primary"} variant="contained">
           次月
         </Button>
       </Box>
