@@ -9,6 +9,8 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { calculateDailyBalances } from "../utils/financeCalculations";
+import { Transaction } from "../types";
 
 ChartJS.register(
   CategoryScale,
@@ -19,7 +21,10 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
+interface BarChartProps {
+  monthlyTransactions: Transaction[];
+}
+const BarChart = ({ monthlyTransactions }: BarChartProps) => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
@@ -33,6 +38,13 @@ const BarChart = () => {
       },
     },
   };
+  // グラフ化するデータの準備
+  const dailyBalances = calculateDailyBalances(monthlyTransactions);
+
+  const dateLabels = Object.keys(dailyBalances);
+  const expenseData = dateLabels.map((day) => dailyBalances[day].expense);
+  const incomeData = dateLabels.map((day) => dailyBalances[day].income);
+
   const labels = [
     "2024-04-10",
     "2024-04-11",

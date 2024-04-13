@@ -4,12 +4,18 @@ import BarChart from "../components/BarChart";
 import CategoryChart from "../components/CategoryChart";
 import MonthSelector from "../components/MonthSelector";
 import TransactionTable from "../components/TransactionTable";
+import { Transaction } from "../types";
 
 interface ReportProps {
   currentMonth: Date;
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
+  monthlyTransactions: Transaction[];
 }
-const Report = ({ currentMonth, setCurrentMonth }: ReportProps) => {
+const Report = ({
+  currentMonth,
+  setCurrentMonth,
+  monthlyTransactions,
+}: ReportProps) => {
   const commonPaperStyle = {
     height: { xs: "auto", md: "400px" },
     display: "flex",
@@ -31,7 +37,7 @@ const Report = ({ currentMonth, setCurrentMonth }: ReportProps) => {
       </Grid>
       <Grid item xs={12} md={8}>
         <Paper sx={commonPaperStyle}>
-          <BarChart />
+          <BarChart monthlyTransactions={monthlyTransactions} />
         </Paper>
       </Grid>
       <Grid item xs={12}>
