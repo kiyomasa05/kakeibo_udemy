@@ -30,6 +30,7 @@ function App() {
   // 取引データを格納するstate
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(true);
 
   // 後にtanstack queryでやってみよう
   useEffect(() => {
@@ -51,10 +52,13 @@ function App() {
         } else {
           console.error("一般的なエラーは:", e);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
     fecheTransactions();
   }, []);
+
   // transactionsから今月の取引データのみ取得
   // format=date-fnsのフォーマット
   const monthlyTransactions = transactions.filter((transaction) => {
@@ -157,6 +161,7 @@ function App() {
                   currentMonth={currentMonth}
                   setCurrentMonth={setCurrentMonth}
                   monthlyTransactions={monthlyTransactions}
+                  isLoading={isLoading}
                 />
               }
             />
