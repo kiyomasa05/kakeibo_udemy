@@ -1,5 +1,19 @@
 import { createTheme, PaletteColor, PaletteColorOptions } from "@mui/material";
-import { blue, green, red } from "@mui/material/colors";
+import {
+  amber,
+  blue,
+  blueGrey,
+  cyan,
+  deepOrange,
+  deepPurple,
+  green,
+  lightBlue,
+  lightGreen,
+  lime,
+  red,
+  teal,
+} from "@mui/material/colors";
+import { ExpenseCategory, IncomeCategory } from "../types";
 
 // MUIの型を拡張
 declare module "@mui/material/styles" {
@@ -7,11 +21,16 @@ declare module "@mui/material/styles" {
     incomeColor: PaletteColor;
     expenseColor: PaletteColor;
     balanceColor: PaletteColor;
+    incomeCategoryColor: Record<IncomeCategory, string>;
+    expenseCategoryColor: Record<ExpenseCategory, string>;
   }
   interface PaletteOptions {
     incomeColor?: PaletteColorOptions;
     expenseColor?: PaletteColorOptions;
     balanceColor?: PaletteColorOptions;
+
+    incomeCategoryColor?: Record<IncomeCategory, string>;
+    expenseCategoryColor?: Record<ExpenseCategory, string>;
   }
 }
 
@@ -38,6 +57,23 @@ export const theme = createTheme({
       main: green[500],
       light: green[100],
       dark: green[700],
+    },
+
+    //
+    incomeCategoryColor: {
+      給与: lightBlue[500],
+      副収入: cyan[200],
+    },
+    expenseCategoryColor: {
+      食費: deepOrange[500],
+      日用品: lightGreen[500],
+      住居費: amber[500],
+      娯楽: cyan[200],
+      医療費: lime[500],
+      子供: amber[100],
+      外食: teal[500],
+      自己投資: deepPurple[500],
+      その他: blueGrey[500],
     },
   },
 });
