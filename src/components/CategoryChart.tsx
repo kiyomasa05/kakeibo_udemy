@@ -13,6 +13,7 @@ import {
   MenuItem,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import {
   ExpenseCategory,
@@ -31,6 +32,7 @@ const CategoryChart = ({
   monthlyTransactions,
   isLoading,
 }: CategoryChartProps) => {
+  const theme = useTheme();
   // 収支タイプ選択のステート
   const [selectedType, setSelectedType] = useState<TransactionType>("expense");
   // 収支タイプの変更
@@ -64,6 +66,22 @@ const CategoryChart = ({
     maintainAspectRatio: false,
     responsive: true,
     plugins: {},
+  };
+
+  const incomeCategoryColor: Record<IncomeCategory, string> = {
+    給与: theme.palette.incomeCategoryColor.給与,
+    副収入: theme.palette.incomeCategoryColor.副収入,
+  };
+  const expenseCategoryColor: Record<ExpenseCategory, string> = {
+    食費: theme.palette.expenseCategoryColor.食費,
+    日用品: theme.palette.expenseCategoryColor.日用品,
+    住居費: theme.palette.expenseCategoryColor.住居費,
+    娯楽: theme.palette.expenseCategoryColor.娯楽,
+    医療費: theme.palette.expenseCategoryColor.医療費,
+    子供: theme.palette.expenseCategoryColor.子供,
+    外食: theme.palette.expenseCategoryColor.外食,
+    自己投資: theme.palette.expenseCategoryColor.自己投資,
+    その他: theme.palette.expenseCategoryColor.その他,
   };
 
   const data: ChartData<"pie"> = {
