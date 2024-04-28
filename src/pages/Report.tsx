@@ -49,7 +49,7 @@ const Report = ({
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <TransactionTable />
+        <TransactionTable monthlyTransactions={monthlyTransactions} />
       </Grid>
     </Grid>
   );
