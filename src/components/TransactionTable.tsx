@@ -24,6 +24,7 @@ import { Transaction } from "../types";
 import { financeCalculations } from "../utils/financeCalculations";
 import { Grid } from "@mui/material";
 import { ValueSetter } from "date-fns/parse/_lib/Setter";
+import { formatCurrency } from "../utils/formatting";
 
 interface Data {
   id: number;
@@ -276,24 +277,33 @@ function TransactionTableToolbar(props: TransactionTableToolbarProps) {
   );
 }
 
-interface FinancialItemProps{
-  title: string,
-  value: number,
-  color:string,
+interface FinancialItemProps {
+  title: string;
+  value: number;
+  color: string;
 }
 
-// 
+// 収支表示コンポーネント
 function FinancialItem({ title, value, color }: FinancialItemProps) {
   return (
-    <Grid item>
-      <Typography>{title }</Typography>
-      <Typography sx={{ color }}>
-        ￥{value}
+    <Grid item xs={4} textAlign={"center"}>
+      <Typography variant="subtitle1" component={"div"}>
+        {title}
+      </Typography>
+      <Typography
+        component={"span"}
+        fontWeight={"fontWeightBold"}
+        sx={{
+          color,
+          fontSize: { xs: ".8rem", sm: "1rem", md: "1.2" },
+          wordBreak: "break-word",
+        }}
+      >
+        ￥{formatCurrency(value)}
       </Typography>
     </Grid>
   );
 }
-
 
 interface TransactionTableProps {
   monthlyTransactions: Transaction[];
@@ -383,7 +393,12 @@ export default function TransactionTable({
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <Grid container>
+        <Grid
+          container
+          sx={{
+            borderBottom: "1px solid rgba(224, 224, 224, 1)"
+          }}
+        >
           <FinancialItem
             title={"収入"}
             value={income}
@@ -399,7 +414,7 @@ export default function TransactionTable({
             value={balance}
             color={theme.palette.balanceColor.main}
           />
-          </Grid>
+        </Grid>
         {/* ツールバー */}
         <TransactionTableToolbar numSelected={selected.length} />
 
