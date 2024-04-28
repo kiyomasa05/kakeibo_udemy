@@ -22,13 +22,9 @@ import { formatCurrency } from "../utils/formatting";
 import iconComponents from "./common/iconComponents";
 import { compareDesc, parseISO } from "date-fns";
 
-
-
-
-
 interface TransactionTableHeadProps {
   numSelected: number;
-  
+
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   rowCount: number;
 }
@@ -37,7 +33,7 @@ interface TransactionTableHeadProps {
 function TransactionTableHead(props: TransactionTableHeadProps) {
   const {
     onSelectAllClick,
-    
+
     numSelected,
     rowCount,
   } = props;
@@ -56,7 +52,7 @@ function TransactionTableHead(props: TransactionTableHeadProps) {
             }}
           />
         </TableCell>
-        
+
         <TableCell align={"left"}>日付</TableCell>
         <TableCell align={"left"}>カテゴリ</TableCell>
         <TableCell align={"left"}>金額</TableCell>
@@ -68,11 +64,12 @@ function TransactionTableHead(props: TransactionTableHeadProps) {
 
 interface TransactionTableToolbarProps {
   numSelected: number;
+  onDelete: () => void;
 }
 
 // テーブルツールバー
 function TransactionTableToolbar(props: TransactionTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, onDelete } = props;
 
   return (
     <Toolbar
@@ -109,7 +106,7 @@ function TransactionTableToolbar(props: TransactionTableToolbarProps) {
       )}
       {numSelected > 0 && (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={onDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -148,17 +145,18 @@ function FinancialItem({ title, value, color }: FinancialItemProps) {
 
 interface TransactionTableProps {
   monthlyTransactions: Transaction[];
+  onDeleteTransaction: (transactionId: string) => Promise<void>;
 }
 
 // テーブル本体
 export default function TransactionTable({
   monthlyTransactions,
+  onDeleteTransaction,
 }: TransactionTableProps) {
   const theme = useTheme();
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
@@ -199,11 +197,18 @@ export default function TransactionTable({
     setPage(0);
   };
 
+  const handleDelete = () => {
+    // onDeleteTransaction(selected.)
+    setSelected([])
+  };
+
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - monthlyTransactions.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - monthlyTransactions.length)
+      : 0;
 
   const visibleRows = React.useMemo(() => {
     // 日付順でソートした取引データ
@@ -245,7 +250,10 @@ export default function TransactionTable({
           />
         </Grid>
         {/* ツールバー */}
-        <TransactionTableToolbar numSelected={selected.length} />
+        <TransactionTableToolbar
+          numSelected={selected.length}
+          onDelete={handleDelete}
+        />
 
         {/* 取引一覧 */}
         <TableContainer>
@@ -308,7 +316,7 @@ export default function TransactionTable({
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (53) * emptyRows,
+                    height: 53 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
