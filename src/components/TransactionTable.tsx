@@ -147,7 +147,7 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-interface EnhancedTableProps {
+interface TransactionTableHeadProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
@@ -159,7 +159,8 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+// テーブルヘッダー
+function TransactionTableHead(props: TransactionTableHeadProps) {
   const {
     onSelectAllClick,
     order,
@@ -213,11 +214,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-interface EnhancedTableToolbarProps {
+interface TransactionTableToolbarProps {
   numSelected: number;
 }
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+// テーブルツールバー
+function TransactionTableToolbar(props: TransactionTableToolbarProps) {
   const { numSelected } = props;
 
   return (
@@ -269,7 +271,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
-export default function EnhancedTable() {
+
+// テーブル本体
+export default function TransactionTable() {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -347,14 +351,17 @@ export default function EnhancedTable() {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* ツールバー */}
+        <TransactionTableToolbar numSelected={selected.length} />
+        
+        {/* 取引一覧 */}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={dense ? "small" : "medium"}
           >
-            <EnhancedTableHead
+            <TransactionTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -414,6 +421,8 @@ export default function EnhancedTable() {
             </TableBody>
           </Table>
         </TableContainer>
+
+        {/* テーブル下部 */}
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -424,10 +433,10 @@ export default function EnhancedTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
+      {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
-      />
+      /> */}
     </Box>
   );
 }
