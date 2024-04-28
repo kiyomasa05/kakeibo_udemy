@@ -193,7 +193,7 @@ function TransactionTableHead(props: TransactionTableHeadProps) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {/* {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -213,7 +213,11 @@ function TransactionTableHead(props: TransactionTableHeadProps) {
               ) : null}
             </TableSortLabel>
           </TableCell>
-        ))}
+        ))} */}
+        <TableCell align={"left"}>日付</TableCell>
+        <TableCell align={"left"}>カテゴリ</TableCell>
+        <TableCell align={"left"}>金額</TableCell>
+        <TableCell align={"left"}>内容</TableCell>
       </TableRow>
     </TableHead>
   );
@@ -257,19 +261,13 @@ function TransactionTableToolbar(props: TransactionTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          月の収支
         </Typography>
       )}
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -379,14 +377,16 @@ export default function TransactionTable({
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
-  );
+  const visibleRows = React.useMemo(() => {
+    const copyMonthlyTransactions = [...monthlyTransactions];
+
+    return copyMonthlyTransactions.slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    );
+  }, [order, orderBy, page, rowsPerPage, monthlyTransactions]);
+  console.log(visibleRows);
+  console.log(rows);
 
   const { income, expense, balance } = financeCalculations(monthlyTransactions);
 
@@ -396,7 +396,7 @@ export default function TransactionTable({
         <Grid
           container
           sx={{
-            borderBottom: "1px solid rgba(224, 224, 224, 1)"
+            borderBottom: "1px solid rgba(224, 224, 224, 1)",
           }}
         >
           <FinancialItem
