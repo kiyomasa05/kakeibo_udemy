@@ -90,13 +90,25 @@ function App() {
   };
 
   // 取引を削除する処理
-  const handleDeleteTransaction = async (transactionId: string) => {
+  const handleDeleteTransaction = async (
+    transactionIds: string | readonly string[]
+  ) => {
     try {
-      // firestoreのデータ削除
-      // doc https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=ja
-      await deleteDoc(doc(db, "Transactions", transactionId));
+      // 引数が配列であればtrueを返し、falseであれば配列にする
+      const idsToDelete = Array.isArray(transactionIds)
+        ? transactionIds
+        : [transactionIds];
+      
+      for (const id of idsToDelete) {
+        // firestoreのデータ削除
+        // doc https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=ja
+        await deleteDoc(doc(db, "Transactions", id));
+      }
+      
+
       const filteredTransactions = transactions.filter(
-        (transaction) => transaction.id !== transactionId
+      // 取引データに削除した取引が含まれないものを返す
+        (transaction) => !idsToDelete.includes(transaction.id)
       );
       setTransactions(filteredTransactions);
     } catch (e) {

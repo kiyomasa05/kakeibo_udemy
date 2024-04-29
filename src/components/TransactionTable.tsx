@@ -145,7 +145,9 @@ function FinancialItem({ title, value, color }: FinancialItemProps) {
 
 interface TransactionTableProps {
   monthlyTransactions: Transaction[];
-  onDeleteTransaction: (transactionId: string) => Promise<void>;
+  onDeleteTransaction: (
+    transactionId: string | readonly string[]
+  ) => Promise<void>;
 }
 
 // テーブル本体
@@ -197,8 +199,9 @@ export default function TransactionTable({
     setPage(0);
   };
 
-  const handleDelete = () => {
-    // onDeleteTransaction(selected.)
+  // 削除機能
+  const TransactionTablelete = () => {
+    onDeleteTransaction(selected)
     setSelected([])
   };
 
@@ -252,7 +255,7 @@ export default function TransactionTable({
         {/* ツールバー */}
         <TransactionTableToolbar
           numSelected={selected.length}
-          onDelete={handleDelete}
+          onDelete={TransactionTablelete}
         />
 
         {/* 取引一覧 */}
