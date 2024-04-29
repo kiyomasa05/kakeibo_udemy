@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import MonthlySummary from "../components/MonthlySummary";
 import Calendar from "../components/Calendar";
@@ -7,6 +7,7 @@ import TransactionForm from "../components/TransactionForm";
 import { Transaction } from "../types";
 import { format } from "date-fns";
 import { Schema } from "../validations/schema";
+import { theme } from "../theme/theme";
 
 interface HomeProps {
   monthlyTransactions: Transaction[];
@@ -33,6 +34,11 @@ const Home = ({
   // 選択された取引を管理するstate
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+
+  // レスポンシブ化 muiの機能
+  const theme = useTheme();
+  // 画面サイズが1200px以下になった時trueを返す
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
   // 月のデータから選択した日の取引データだけ取得する
   const dailyTransactions = monthlyTransactions.filter((transaction) => {
@@ -77,6 +83,7 @@ const Home = ({
           currentDay={currentDay}
           onAddTransactionForm={handleAddTransactionForm}
           onSelectTransaction={handleSelectTransaction}
+          isMobile={isMobile}
         />
         <TransactionForm
           onCloseForm={closeForm}
