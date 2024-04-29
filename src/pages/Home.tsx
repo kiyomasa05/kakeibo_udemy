@@ -36,6 +36,7 @@ const Home = ({
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // レスポンシブ化 muiの機能
   const theme = useTheme();
@@ -48,8 +49,13 @@ const Home = ({
   });
   // フォームの開閉する処理 子に渡す
   const closeForm = () => {
-    setIsEntryDrawerOpen(!isEntryDrawerOpen);
     setSelectedTransaction(null);
+
+    if (isMobile) {
+      setIsDialogOpen(!isDialogOpen);
+    } else {
+      setIsEntryDrawerOpen(!isEntryDrawerOpen);
+    }
   };
   // フォームの開閉処理
   const handleAddTransactionForm = () => {
@@ -72,8 +78,8 @@ const Home = ({
 
   // モバイル用Drawerを閉じる関数
   const handleCloseMobileDrawer = () => {
-    setIsMobileDrawerOpen(false)
-  }
+    setIsMobileDrawerOpen(false);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -110,6 +116,7 @@ const Home = ({
           setSelectedTransaction={setSelectedTransaction}
           onUpdateTransaction={onUpdateTransaction}
           isMobile={isMobile}
+          isDialogOpen={isDialogOpen}
         />
       </Box>
     </Box>

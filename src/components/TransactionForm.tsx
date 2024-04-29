@@ -47,6 +47,7 @@ interface TransactionFormProps {
     transactionId: string
   ) => Promise<void>;
   isMobile: Boolean;
+  isDialogOpen: boolean;
 }
 type IncomeExpense = "income" | "expense";
 
@@ -65,6 +66,7 @@ const TransactionForm = ({
   setSelectedTransaction,
   onUpdateTransaction,
   isMobile,
+  isDialogOpen,
 }: TransactionFormProps) => {
   const formWidth = 320;
 
@@ -337,7 +339,12 @@ const TransactionForm = ({
     <>
       {isMobile ? (
         //mobile
-        <Dialog open={true} fullWidth maxWidth={"sm"}>
+        <Dialog
+          open={isDialogOpen}
+          onClose={onCloseForm}
+          fullWidth
+          maxWidth={"sm"}
+        >
           <DialogContent>{formContent}</DialogContent>
         </Dialog>
       ) : (
