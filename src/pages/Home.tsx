@@ -57,18 +57,28 @@ const Home = ({
       setIsEntryDrawerOpen(!isEntryDrawerOpen);
     }
   };
+
   // フォームの開閉処理
   const handleAddTransactionForm = () => {
-    if (selectedTransaction) {
-      setSelectedTransaction(null);
+    if (isMobile) {
+      setIsDialogOpen(true);
     } else {
-      setIsEntryDrawerOpen(!isEntryDrawerOpen);
+      if (selectedTransaction) {
+        setSelectedTransaction(null);
+      } else {
+        setIsEntryDrawerOpen(!isEntryDrawerOpen);
+      }
     }
   };
+
   // 取引が選択された時の処理
   const handleSelectTransaction = (transaction: Transaction) => {
-    setIsEntryDrawerOpen(true);
     setSelectedTransaction(transaction);
+    if (isMobile) {
+      setIsDialogOpen(true);
+    } else {
+      setIsEntryDrawerOpen(true);
+    }
   };
   // 日付を選択した時の処理
   const handleDateClick = (dateInfo: DateClickArg) => {
@@ -117,6 +127,7 @@ const Home = ({
           onUpdateTransaction={onUpdateTransaction}
           isMobile={isMobile}
           isDialogOpen={isDialogOpen}
+          setIsDialogOpen={setIsDialogOpen}
         />
       </Box>
     </Box>
