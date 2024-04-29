@@ -73,7 +73,10 @@ const TransactionMenu = ({
           日時： {currentDay}
         </Typography>
         {/* 内訳タイトル&内訳追加ボタン */}
-        <DailySummary dailyTransactions={dailyTransactions} />
+        <DailySummary
+          dailyTransactions={dailyTransactions}
+          columns={isMobile ? 3 : 2}
+        />
         <Box
           sx={{
             display: "flex",
