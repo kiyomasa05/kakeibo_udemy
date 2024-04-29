@@ -8,6 +8,7 @@ import { Transaction } from "../types";
 import { format } from "date-fns";
 import { Schema } from "../validations/schema";
 import { theme } from "../theme/theme";
+import { DateClickArg } from "@fullcalendar/interaction";
 
 interface HomeProps {
   monthlyTransactions: Transaction[];
@@ -34,6 +35,7 @@ const Home = ({
   // 選択された取引を管理するstate
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // レスポンシブ化 muiの機能
   const theme = useTheme();
@@ -62,6 +64,16 @@ const Home = ({
     setIsEntryDrawerOpen(true);
     setSelectedTransaction(transaction);
   };
+  // 日付を選択した時の処理
+  const handleDateClick = (dateInfo: DateClickArg) => {
+    setCurrentDay(dateInfo.dateStr);
+    setIsMobileDrawerOpen(true);
+  };
+
+  // モバイル用Drawerを閉じる関数
+  const handleCloseMobileDrawer = () => {
+    setIsMobileDrawerOpen(false)
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -74,6 +86,7 @@ const Home = ({
           setCurrentDay={setCurrentDay}
           currentDay={currentDay}
           today={today}
+          onDateClick={handleDateClick}
         />
       </Box>
       {/* 右側 */}
@@ -84,6 +97,8 @@ const Home = ({
           onAddTransactionForm={handleAddTransactionForm}
           onSelectTransaction={handleSelectTransaction}
           isMobile={isMobile}
+          open={isMobileDrawerOpen}
+          onClose={handleCloseMobileDrawer}
         />
         <TransactionForm
           onCloseForm={closeForm}
