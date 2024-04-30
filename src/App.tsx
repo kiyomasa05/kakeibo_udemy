@@ -19,6 +19,7 @@ import {
 import { db } from "./firebase";
 import { formatMonth } from "./utils/formatting";
 import { Schema } from "./validations/schema";
+import { AppContextProvider } from "./context/AppContext";
 
 function App() {
   // firestoreエラーかどうか判定する型ガード
@@ -98,16 +99,15 @@ function App() {
       const idsToDelete = Array.isArray(transactionIds)
         ? transactionIds
         : [transactionIds];
-      
+
       for (const id of idsToDelete) {
         // firestoreのデータ削除
         // doc https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=ja
         await deleteDoc(doc(db, "Transactions", id));
       }
-      
 
       const filteredTransactions = transactions.filter(
-      // 取引データに削除した取引が含まれないものを返す
+        // 取引データに削除した取引が含まれないものを返す
         (transaction) => !idsToDelete.includes(transaction.id)
       );
       setTransactions(filteredTransactions);
@@ -149,41 +149,43 @@ function App() {
     }
   };
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path="/" element={<AppLayout />}>
-            <Route
-              index
-              element={
-                <Home
-                  monthlyTransactions={monthlyTransactions}
-                  setCurrentMonth={setCurrentMonth}
-                  onSaveTransaction={handleSaveTransaction}
-                  onDeleteTransaction={handleDeleteTransaction}
-                  onUpdateTransaction={handleUpdateTransaction}
-                />
-              }
-            />
-            <Route
-              path="/report"
-              element={
-                <Report
-                  currentMonth={currentMonth}
-                  setCurrentMonth={setCurrentMonth}
-                  monthlyTransactions={monthlyTransactions}
-                  isLoading={isLoading}
-                  onDeleteTransaction={handleDeleteTransaction}
-                />
-              }
-            />
-            {/* 何にもマッチしなかった場合 */}
-            <Route path="*" element={<NoMatch />}></Route>
-          </Route>
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <AppContextProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Router>
+          <Routes>
+            <Route path="/" element={<AppLayout />}>
+              <Route
+                index
+                element={
+                  <Home
+                    monthlyTransactions={monthlyTransactions}
+                    setCurrentMonth={setCurrentMonth}
+                    onSaveTransaction={handleSaveTransaction}
+                    onDeleteTransaction={handleDeleteTransaction}
+                    onUpdateTransaction={handleUpdateTransaction}
+                  />
+                }
+              />
+              <Route
+                path="/report"
+                element={
+                  <Report
+                    currentMonth={currentMonth}
+                    setCurrentMonth={setCurrentMonth}
+                    monthlyTransactions={monthlyTransactions}
+                    isLoading={isLoading}
+                    onDeleteTransaction={handleDeleteTransaction}
+                  />
+                }
+              />
+              {/* 何にもマッチしなかった場合 */}
+              <Route path="*" element={<NoMatch />}></Route>
+            </Route>
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </AppContextProvider>
   );
 }
 
