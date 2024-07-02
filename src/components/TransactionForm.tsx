@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close"; // 閉じるボタン用のアイコン
 import FastfoodIcon from "@mui/icons-material/Fastfood"; //食事アイコン
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -29,6 +29,7 @@ import SavingsIcon from "@mui/icons-material/Savings";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Schema, transactionSchema } from "../validations/schema";
 import { ResetTv } from "@mui/icons-material";
+import { AppContext, useAppContext } from "../context/AppContext";
 
 interface TransactionFormProps {
   onCloseForm: () => void;
@@ -70,6 +71,10 @@ const TransactionForm = ({
   isDialogOpen,
   setIsDialogOpen,
 }: TransactionFormProps) => {
+  const context = useAppContext();
+
+  console.log(context.transactions);
+
   const formWidth = 320;
 
   const expenseCategories: CategoryItem[] = [

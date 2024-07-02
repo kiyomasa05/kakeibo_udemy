@@ -19,7 +19,7 @@ import {
 import { db } from "./firebase";
 import { formatMonth } from "./utils/formatting";
 import { Schema } from "./validations/schema";
-import { AppContextProvider } from "./context/AppContext";
+import { AppContextProvider, useAppContext } from "./context/AppContext";
 
 function App() {
   // firestoreエラーかどうか判定する型ガード
@@ -28,6 +28,7 @@ function App() {
   ): error is { code: string; message: string } {
     return typeof error === "object" && error !== null && "code" in error;
   }
+
   // 取引データを格納するstate
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -148,6 +149,7 @@ function App() {
       }
     }
   };
+
   return (
     <AppContextProvider>
       <ThemeProvider theme={theme}>
