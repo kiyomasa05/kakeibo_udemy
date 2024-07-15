@@ -35,19 +35,19 @@ interface TransactionFormProps {
   onCloseForm: () => void;
   isEntryDrawerOpen: boolean;
   currentDay: string;
-  onSaveTransaction: (transaction: Schema) => Promise<void>;
+  // onSaveTransaction: (transaction: Schema) => Promise<void>;
   selectedTransaction: Transaction | null;
-  onDeleteTransaction: (
-    transactionId: string | readonly string[]
-  ) => Promise<void>;
+  // onDeleteTransaction: (
+  //   transactionId: string | readonly string[]
+  // ) => Promise<void>;
   setSelectedTransaction: React.Dispatch<
     React.SetStateAction<Transaction | null>
   >;
-  onUpdateTransaction: (
-    transaction: Schema,
-    transactionId: string
-  ) => Promise<void>;
-  isMobile: Boolean;
+  // onUpdateTransaction: (
+  //   transaction: Schema,
+  //   transactionId: string
+  // ) => Promise<void>;
+  // isMobile: Boolean;
   isDialogOpen: boolean;
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -62,18 +62,23 @@ const TransactionForm = ({
   onCloseForm,
   isEntryDrawerOpen,
   currentDay,
-  onSaveTransaction,
+  // onSaveTransaction,
   selectedTransaction,
-  onDeleteTransaction,
+  // onDeleteTransaction,
   setSelectedTransaction,
-  onUpdateTransaction,
-  isMobile,
+  // onUpdateTransaction,
+  // isMobile,
   isDialogOpen,
   setIsDialogOpen,
 }: TransactionFormProps) => {
-  const context = useAppContext();
 
-  console.log(context.transactions);
+  // グローバル値
+  const {
+    isMobile,
+    onSaveTransaction,
+    onDeleteTransaction,
+    onUpdateTransaction,
+  } = useAppContext();
 
   const formWidth = 320;
 

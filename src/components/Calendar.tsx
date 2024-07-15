@@ -10,10 +10,12 @@ import { formatCurrency } from "../utils/formatting";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import { useTheme } from "@mui/material";
 import { isSameMonth } from "date-fns";
+import useMonthlyTransactions from "../hooks/useMonthlyTransactions";
+import { useAppContext } from "../context/AppContext";
 
 interface CalendarProps {
-  monthlyTransactions: Transaction[];
-  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
+  // monthlyTransactions: Transaction[];
+  // setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
   setCurrentDay: React.Dispatch<React.SetStateAction<string>>;
   currentDay: string;
   today: string;
@@ -21,13 +23,17 @@ interface CalendarProps {
 }
 
 const Calendar = ({
-  monthlyTransactions,
-  setCurrentMonth,
+  // monthlyTransactions,
+  // setCurrentMonth,
   setCurrentDay,
   currentDay,
   today,
-  onDateClick
+  onDateClick,
 }: CalendarProps) => {
+  // グローバル値
+  const monthlyTransactions = useMonthlyTransactions();
+  const { setCurrentMonth } = useAppContext();
+
   const theme = useTheme();
   const backgroundEvent = {
     start: currentDay,
@@ -74,13 +80,13 @@ const Calendar = ({
   const handleDateSet = (datesetInfo: DatesSetArg) => {
     const currentMonth = datesetInfo.view.currentStart;
     setCurrentMonth(currentMonth);
-    const todayDate = new Date()
+    const todayDate = new Date();
     // 今日が同じ月の場合
     if (isSameMonth(todayDate, currentMonth)) {
       setCurrentDay(today);
     }
   };
-  
+
   return (
     <FullCalendar
       locale={jaLocale}
